@@ -1,16 +1,19 @@
-# sasyarakshak
+# Sasyarakshak
 
-A new Flutter project.
+A smart irrigation control system for farmers that automates water usage based on soil moisture.
 
-## Getting Started
+## Core Idea
+Reduce water waste and manual monitoring by integrating:
+- Soil sensors
+- Motor control
+- Mobile app interface
 
-This project is a starting point for a Flutter application.
+## Roadmap
+- [ ] Sensor integration
+- [ ] Real-time moisture dashboard
+- [ ] Auto motor control logic
+- [ ] Offline support for rural areas
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Stack
+- Flutter (App)
+- Embedded system (ATmega / ESP - planned)

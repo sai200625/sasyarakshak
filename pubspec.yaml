@@ -1,0 +1,30 @@
+name: greenflow
+description: GreenFlow Smart Irrigation Control Room
+
+publish_to: 'none'
+
+version: 5.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # MQTT
+  mqtt_client: ^10.0.0
+
+  # State management
+  provider: ^6.1.1
+
+  # Persistent prefs (theme setting)
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true

@@ -61,14 +61,14 @@ class T {
   static const off = Color(0xFF3D4459);
 
   // Text (dark mode)
-  static const dText1 = Color(0xFFFFFFFF);   // primary — pure white
-  static const dText2 = Color(0xFFB0BAD0);   // secondary
-  static const dText3 = Color(0xFF5A6480);   // tertiary / label
+  static const dText1 = Color(0xFFFFFFFF); // primary — pure white
+  static const dText2 = Color(0xFFB0BAD0); // secondary
+  static const dText3 = Color(0xFF5A6480); // tertiary / label
 
   // Text (light mode)
-  static const lText1 = Color(0xFF0D1526);   // primary — near black
-  static const lText2 = Color(0xFF4A5470);   // secondary
-  static const lText3 = Color(0xFF9AA3BE);   // tertiary / label
+  static const lText1 = Color(0xFF0D1526); // primary — near black
+  static const lText2 = Color(0xFF4A5470); // secondary
+  static const lText3 = Color(0xFF9AA3BE); // tertiary / label
 
   // Surfaces (light)
   static const lBg = Color(0xFFF2F5FB);
@@ -101,6 +101,7 @@ class T {
 }
 
 enum IrrigationMode { manual, automatic, schedule }
+
 enum MqttStatus { disconnected, connecting, connected, error }
 
 extension ModeX on IrrigationMode {
@@ -307,8 +308,7 @@ class GreenFlowApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeMode =
-        context.select<AppState, ThemeMode>((s) => s.themeMode);
+    final themeMode = context.select<AppState, ThemeMode>((s) => s.themeMode);
     return MaterialApp(
       title: 'GreenFlow',
       debugShowCheckedModeBanner: false,
@@ -355,12 +355,12 @@ class GreenFlowApp extends StatelessWidget {
             fontWeight: FontWeight.w700,
             color: text1,
             letterSpacing: -0.4),
-        headlineSmall: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.w700, color: text1),
-        titleLarge: TextStyle(
-            fontSize: 16, fontWeight: FontWeight.w600, color: text1),
-        titleMedium: TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w600, color: text1),
+        headlineSmall:
+            TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: text1),
+        titleLarge:
+            TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: text1),
+        titleMedium:
+            TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: text1),
         bodyLarge: TextStyle(fontSize: 15, color: text2),
         bodyMedium: TextStyle(fontSize: 14, color: text2),
         labelLarge: TextStyle(
@@ -373,9 +373,8 @@ class GreenFlowApp extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        systemOverlayStyle: dark
-            ? SystemUiOverlayStyle.light
-            : SystemUiOverlayStyle.dark,
+        systemOverlayStyle:
+            dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
         iconTheme: IconThemeData(color: text1, size: 22),
         titleTextStyle: TextStyle(
             color: text1,
@@ -435,8 +434,7 @@ class _RootShellState extends State<RootShell> {
           children: const [DashboardPage(), ControlsPage(), SettingsPage()]),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-            border: Border(
-                top: BorderSide(color: T.cardBorder(dark)))),
+            border: Border(top: BorderSide(color: T.cardBorder(dark)))),
         child: NavigationBar(
           selectedIndex: _tab,
           onDestinationSelected: (i) => setState(() => _tab = i),
@@ -518,8 +516,7 @@ class _DashAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final status =
-        context.select<AppState, MqttStatus>((s) => s.mqttStatus);
+    final status = context.select<AppState, MqttStatus>((s) => s.mqttStatus);
 
     return SafeArea(
       child: Padding(
@@ -555,8 +552,9 @@ class _DashAppBar extends StatelessWidget {
             const SizedBox(width: 10),
             // Theme toggle
             GestureDetector(
-              onTap: () => context.read<AppState>().setTheme(
-                  dark ? ThemeMode.light : ThemeMode.dark),
+              onTap: () => context
+                  .read<AppState>()
+                  .setTheme(dark ? ThemeMode.light : ThemeMode.dark),
               child: Container(
                 width: 38,
                 height: 38,
@@ -565,9 +563,7 @@ class _DashAppBar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(11),
                     border: Border.all(color: T.cardBorder(dark))),
                 child: Icon(
-                    dark
-                        ? Icons.light_mode_rounded
-                        : Icons.dark_mode_rounded,
+                    dark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
                     color: T.text2(dark),
                     size: 19),
               ),
@@ -630,8 +626,11 @@ class _MoistureCard extends StatelessWidget {
           const SizedBox(height: 4),
 
           // Semicircular gauge
-          _SemiGauge(value: online > 0 ? avg / 100.0 : 0, avg: avg,
-              online: online, dark: dark),
+          _SemiGauge(
+              value: online > 0 ? avg / 100.0 : 0,
+              avg: avg,
+              online: online,
+              dark: dark),
 
           // Divider
           Divider(height: 1, color: T.cardBorder(dark)),
@@ -670,8 +669,8 @@ class _SemiGaugeState extends State<_SemiGauge>
     super.initState();
     _ctrl = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1200));
-    _anim = Tween<double>(begin: 0, end: widget.value).animate(
-        CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic));
+    _anim = Tween<double>(begin: 0, end: widget.value)
+        .animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic));
     _ctrl.forward();
   }
 
@@ -679,8 +678,8 @@ class _SemiGaugeState extends State<_SemiGauge>
   void didUpdateWidget(_SemiGauge old) {
     super.didUpdateWidget(old);
     if (old.value != widget.value) {
-      _anim = Tween<double>(begin: _anim.value, end: widget.value).animate(
-          CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic));
+      _anim = Tween<double>(begin: _anim.value, end: widget.value)
+          .animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic));
       _ctrl
         ..reset()
         ..forward();
@@ -720,8 +719,8 @@ class _SemiGaugeState extends State<_SemiGauge>
               // Gauge painter
               Positioned.fill(
                 child: CustomPaint(
-                  painter: _SemiGaugePainter(
-                      value: _anim.value, dark: widget.dark),
+                  painter:
+                      _SemiGaugePainter(value: _anim.value, dark: widget.dark),
                 ),
               ),
               // Centre readout — positioned in lower half of the semicircle
@@ -731,9 +730,7 @@ class _SemiGaugeState extends State<_SemiGauge>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      widget.online > 0
-                          ? '${widget.avg.round()}%'
-                          : '--',
+                      widget.online > 0 ? '${widget.avg.round()}%' : '--',
                       style: TextStyle(
                           fontSize: 54,
                           fontWeight: FontWeight.w900,
@@ -767,8 +764,8 @@ class _SemiGaugePainter extends CustomPainter {
   _SemiGaugePainter({required this.value, required this.dark});
 
   // Arc spans from 180° to 0° (left to right across top)
-  static const double _startAngle = pi;        // 180°
-  static const double _sweepAngle = pi;        // semicircle
+  static const double _startAngle = pi; // 180°
+  static const double _sweepAngle = pi; // semicircle
   static const double _arcRadius = 100.0;
   static const double _trackWidth = 14.0;
 
@@ -777,8 +774,7 @@ class _SemiGaugePainter extends CustomPainter {
     final cx = size.width / 2;
     final cy = size.height - 30; // anchor the base of the semicircle
     final center = Offset(cx, cy);
-    final rect =
-        Rect.fromCircle(center: center, radius: _arcRadius);
+    final rect = Rect.fromCircle(center: center, radius: _arcRadius);
 
     // ── Track (background arc) ────────────────────────────────
     final trackPaint = Paint()
@@ -822,19 +818,14 @@ class _SemiGaugePainter extends CustomPainter {
         ..strokeWidth = _trackWidth
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round;
-      canvas.drawArc(
-          rect,
-          _startAngle + dimAngle,
-          _sweepAngle * (1 - value),
-          false,
-          dimPaint);
+      canvas.drawArc(rect, _startAngle + dimAngle, _sweepAngle * (1 - value),
+          false, dimPaint);
     }
 
     // ── Needle ────────────────────────────────────────────────
     final needleAngle = _startAngle + _sweepAngle * value;
     final needleLength = _arcRadius - 4.0;
-    final needleTip = Offset(
-        center.dx + needleLength * cos(needleAngle),
+    final needleTip = Offset(center.dx + needleLength * cos(needleAngle),
         center.dy + needleLength * sin(needleAngle));
 
     // Needle shadow
@@ -858,17 +849,9 @@ class _SemiGaugePainter extends CustomPainter {
 
     // Needle pivot circle
     canvas.drawCircle(
-        center,
-        8,
-        Paint()..color = dark ? T.bg3 : const Color(0xFFEDF0F8));
-    canvas.drawCircle(
-        center,
-        5,
-        Paint()..color = needleColor);
-    canvas.drawCircle(
-        center,
-        2.5,
-        Paint()..color = Colors.white);
+        center, 8, Paint()..color = dark ? T.bg3 : const Color(0xFFEDF0F8));
+    canvas.drawCircle(center, 5, Paint()..color = needleColor);
+    canvas.drawCircle(center, 2.5, Paint()..color = Colors.white);
   }
 
   Color _moistureColor(double v) {
@@ -896,8 +879,8 @@ class _SensorStrip extends StatelessWidget {
       child: Row(
         children: List.generate(sensorCount, (i) {
           return Expanded(
-            child: _SensorStripCell(index: i, dark: dark,
-                isLast: i == sensorCount - 1),
+            child: _SensorStripCell(
+                index: i, dark: dark, isLast: i == sensorCount - 1),
           );
         }),
       ),
@@ -915,8 +898,7 @@ class _SensorStripCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pct = context.select<AppState, int>((s) => s.moisture[index]);
-    final online =
-        context.select<AppState, bool>((s) => s.sensorOnline[index]);
+    final online = context.select<AppState, bool>((s) => s.sensorOnline[index]);
     final color = online ? T.moisture(pct) : T.off;
 
     return Container(
@@ -927,14 +909,14 @@ class _SensorStripCell extends StatelessWidget {
                   : BorderSide(color: T.cardBorder(dark)))),
       child: Column(children: [
         // WiFi / connectivity icon
-        Icon(
-            online ? Icons.wifi_rounded : Icons.wifi_off_rounded,
-            size: 14,
-            color: online ? T.green : T.off),
+        Icon(online ? Icons.wifi_rounded : Icons.wifi_off_rounded,
+            size: 14, color: online ? T.green : T.off),
         const SizedBox(height: 4),
         Text('Sensor ${index + 1}',
             style: TextStyle(
-                fontSize: 11, color: T.text2(dark), fontWeight: FontWeight.w500)),
+                fontSize: 11,
+                color: T.text2(dark),
+                fontWeight: FontWeight.w500)),
         const SizedBox(height: 4),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(online ? '$pct%' : '--',
@@ -1033,14 +1015,16 @@ class _MotorStatusCardState extends State<_MotorStatusCard>
             // ON / OFF badge
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
               decoration: BoxDecoration(
                   gradient: on ? T.motorGrad : null,
-                  color: on ? null : (widget.dark ? T.bg3 : const Color(0xFFEEF2FC)),
+                  color: on
+                      ? null
+                      : (widget.dark ? T.bg3 : const Color(0xFFEEF2FC)),
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(
-                      color: on ? Colors.transparent : T.cardBorder(widget.dark))),
+                      color:
+                          on ? Colors.transparent : T.cardBorder(widget.dark))),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 Container(
                     width: 7,
@@ -1076,8 +1060,7 @@ class _CurrentModeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mode =
-        context.select<AppState, IrrigationMode>((s) => s.mode);
+    final mode = context.select<AppState, IrrigationMode>((s) => s.mode);
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -1129,8 +1112,7 @@ class _AlertBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final avg = context.select<AppState, double>((s) => s.avgMoisture);
     final online = context.select<AppState, int>((s) => s.onlineSensors);
-    final connected =
-        context.select<AppState, bool>((s) => s.isConnected);
+    final connected = context.select<AppState, bool>((s) => s.isConnected);
 
     final (icon, title, subtitle, color) = _content(avg, online, connected);
 
@@ -1145,24 +1127,20 @@ class _AlertBanner extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color.withOpacity(0.15)),
+                shape: BoxShape.circle, color: color.withOpacity(0.15)),
             child: Icon(icon, color: color, size: 22)),
         const SizedBox(width: 14),
         Expanded(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-              Text(title,
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      color: T.text1(dark))),
-              const SizedBox(height: 2),
-              Text(subtitle,
-                  style:
-                      TextStyle(fontSize: 13, color: T.text2(dark))),
-            ])),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(title,
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
+                  color: T.text1(dark))),
+          const SizedBox(height: 2),
+          Text(subtitle, style: TextStyle(fontSize: 13, color: T.text2(dark))),
+        ])),
         Icon(Icons.chevron_right_rounded, color: T.text3(dark), size: 20),
       ]),
     );
@@ -1171,28 +1149,52 @@ class _AlertBanner extends StatelessWidget {
   (IconData, String, String, Color) _content(
       double avg, int online, bool connected) {
     if (!connected) {
-      return (Icons.cloud_off_rounded, 'Not Connected',
-          'Tap the status chip to reconnect.', T.off);
+      return (
+        Icons.cloud_off_rounded,
+        'Not Connected',
+        'Tap the status chip to reconnect.',
+        T.off
+      );
     }
     if (online == 0) {
-      return (Icons.sensors_off_rounded, 'No Sensors Online',
-          'Check hardware connections.', T.dry);
+      return (
+        Icons.sensors_off_rounded,
+        'No Sensors Online',
+        'Check hardware connections.',
+        T.dry
+      );
     }
     final p = avg.round();
     if (p < 30) {
-      return (Icons.warning_amber_rounded, 'Soil is Very Dry!',
-          'Consider turning on irrigation now.', T.dry);
+      return (
+        Icons.warning_amber_rounded,
+        'Soil is Very Dry!',
+        'Consider turning on irrigation now.',
+        T.dry
+      );
     }
     if (p < 55) {
-      return (Icons.water_drop_outlined, 'Moderate Moisture',
-          'Monitor levels — may need irrigation soon.', T.mid);
+      return (
+        Icons.water_drop_outlined,
+        'Moderate Moisture',
+        'Monitor levels — may need irrigation soon.',
+        T.mid
+      );
     }
     if (p < 75) {
-      return (Icons.check_circle_outline_rounded, 'All Good!',
-          'Soil moisture is in optimal range.', T.good);
+      return (
+        Icons.check_circle_outline_rounded,
+        'All Good!',
+        'Soil moisture is in optimal range.',
+        T.good
+      );
     }
-    return (Icons.opacity_rounded, 'Soil is Saturated',
-        'No irrigation needed right now.', T.wet);
+    return (
+      Icons.opacity_rounded,
+      'Soil is Saturated',
+      'No irrigation needed right now.',
+      T.wet
+    );
   }
 }
 
@@ -1203,8 +1205,7 @@ class _ModeControlPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mode =
-        context.select<AppState, IrrigationMode>((s) => s.mode);
+    final mode = context.select<AppState, IrrigationMode>((s) => s.mode);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1249,8 +1250,7 @@ class _ManualControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final on = context.select<AppState, bool>((s) => s.motorOn);
-    final connected =
-        context.select<AppState, bool>((s) => s.isConnected);
+    final connected = context.select<AppState, bool>((s) => s.isConnected);
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -1297,13 +1297,10 @@ class _ManualControls extends StatelessWidget {
                                 offset: const Offset(0, 4))
                           ]
                         : null),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Icon(Icons.play_circle_rounded,
-                      color: (!on && connected)
-                          ? Colors.white
-                          : T.text3(dark),
+                      color: (!on && connected) ? Colors.white : T.text3(dark),
                       size: 20),
                   const SizedBox(width: 8),
                   Text('Start Motor',
@@ -1336,9 +1333,8 @@ class _ManualControls extends StatelessWidget {
                         color: (on && connected)
                             ? T.dry.withOpacity(0.4)
                             : T.cardBorder(dark))),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Icon(Icons.stop_circle_rounded,
                       color: (on && connected) ? T.dry : T.text3(dark),
                       size: 20),
@@ -1347,9 +1343,7 @@ class _ManualControls extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w800,
-                          color: (on && connected)
-                              ? T.dry
-                              : T.text3(dark))),
+                          color: (on && connected) ? T.dry : T.text3(dark))),
                 ]),
               ),
             ),
@@ -1432,8 +1426,7 @@ class _AutoControlsState extends State<_AutoControls> {
 
         const SizedBox(height: 18),
         // Hysteresis mini-bar
-        _HysteresisBar(
-            on: _on!.round(), off: _off!.round(), dark: widget.dark),
+        _HysteresisBar(on: _on!.round(), off: _off!.round(), dark: widget.dark),
       ]),
     );
   }
@@ -1479,9 +1472,7 @@ class _ThresholdRow extends StatelessWidget {
                 border: Border.all(color: color.withOpacity(0.25))),
             child: Text('${value.round()}%',
                 style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w900,
-                    color: color))),
+                    fontSize: 14, fontWeight: FontWeight.w900, color: color))),
       ]),
       SliderTheme(
         data: SliderTheme.of(context).copyWith(
@@ -1576,8 +1567,7 @@ class _ScheduleControls extends StatelessWidget {
   final bool dark;
   const _ScheduleControls({required this.dark, super.key});
 
-  String _fmt(int s) =>
-      '${((s ~/ 3600) % 24).toString().padLeft(2, '0')}:'
+  String _fmt(int s) => '${((s ~/ 3600) % 24).toString().padLeft(2, '0')}:'
       '${((s % 3600) ~/ 60).toString().padLeft(2, '0')}';
 
   TimeOfDay _tod(int s) =>
@@ -1599,8 +1589,7 @@ class _ScheduleControls extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 color: T.text1(dark))),
         const SizedBox(height: 4),
-        Text(
-            'Motor runs every day between the start and stop times.',
+        Text('Motor runs every day between the start and stop times.',
             style: TextStyle(fontSize: 12, color: T.text2(dark))),
         const SizedBox(height: 18),
 
@@ -1616,8 +1605,7 @@ class _ScheduleControls extends StatelessWidget {
                   enabled: s.isConnected,
                   onTap: () async {
                     final t = await showTimePicker(
-                        context: context,
-                        initialTime: _tod(s.schedStartSec));
+                        context: context, initialTime: _tod(s.schedStartSec));
                     if (t != null) {
                       s.setSchedStart(t.hour * 3600 + t.minute * 60);
                     }
@@ -1637,8 +1625,7 @@ class _ScheduleControls extends StatelessWidget {
                   enabled: s.isConnected,
                   onTap: () async {
                     final t = await showTimePicker(
-                        context: context,
-                        initialTime: _tod(s.schedStopSec));
+                        context: context, initialTime: _tod(s.schedStopSec));
                     if (t != null) {
                       s.setSchedStop(t.hour * 3600 + t.minute * 60);
                     }
@@ -1668,8 +1655,7 @@ class _ScheduleControls extends StatelessWidget {
               Text('Daily Active Period',
                   style: TextStyle(fontSize: 12, color: T.text2(dark))),
               const SizedBox(height: 2),
-              Text(
-                  '${_fmt(s.schedStartSec)}  →  ${_fmt(s.schedStopSec)}',
+              Text('${_fmt(s.schedStartSec)}  →  ${_fmt(s.schedStopSec)}',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
@@ -1707,9 +1693,8 @@ class _SchedTimeTile extends StatelessWidget {
               color: color.withOpacity(0.06),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                  color: enabled
-                      ? color.withOpacity(0.3)
-                      : T.cardBorder(dark))),
+                  color:
+                      enabled ? color.withOpacity(0.3) : T.cardBorder(dark))),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
@@ -1753,8 +1738,7 @@ class ControlsPage extends StatelessWidget {
             title: const Text('Controls'),
             bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(1),
-                child: Divider(
-                    height: 1, color: T.cardBorder(dark)))),
+                child: Divider(height: 1, color: T.cardBorder(dark)))),
         SliverPadding(
           padding: const EdgeInsets.all(20),
           sliver: SliverList(
@@ -1774,8 +1758,7 @@ class ControlsPage extends StatelessWidget {
                   opacity: anim,
                   child: SlideTransition(
                       position: Tween<Offset>(
-                              begin: const Offset(0, 0.06),
-                              end: Offset.zero)
+                              begin: const Offset(0, 0.06), end: Offset.zero)
                           .animate(anim),
                       child: child)),
               child: s.mode == IrrigationMode.automatic
@@ -1783,9 +1766,7 @@ class ControlsPage extends StatelessWidget {
                       state: s, dark: dark, key: const ValueKey('auto'))
                   : s.mode == IrrigationMode.schedule
                       ? _SchedSection(
-                          state: s,
-                          dark: dark,
-                          key: const ValueKey('sched'))
+                          state: s, dark: dark, key: const ValueKey('sched'))
                       : _ManualSection(
                           dark: dark, key: const ValueKey('manual')),
             ),
@@ -1830,13 +1811,10 @@ class _ModePicker extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(18),
                     gradient: sel ? T.blueGrad : null,
-                    color: sel
-                        ? null
-                        : (dark ? T.bg3 : const Color(0xFFF4F7FF)),
+                    color:
+                        sel ? null : (dark ? T.bg3 : const Color(0xFFF4F7FF)),
                     border: Border.all(
-                        color: sel
-                            ? Colors.transparent
-                            : T.cardBorder(dark)),
+                        color: sel ? Colors.transparent : T.cardBorder(dark)),
                     boxShadow: sel
                         ? [
                             BoxShadow(
@@ -1847,8 +1825,7 @@ class _ModePicker extends StatelessWidget {
                         : null),
                 child: Column(children: [
                   Icon(m.icon,
-                      size: 24,
-                      color: sel ? Colors.white : T.text2(dark)),
+                      size: 24, color: sel ? Colors.white : T.text2(dark)),
                   const SizedBox(height: 8),
                   Text(m.label,
                       style: TextStyle(
@@ -1884,24 +1861,21 @@ class _ZonePicker extends StatelessWidget {
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: GestureDetector(
-              onTap:
-                  state.isConnected ? () => state.setSensorCount(val) : null,
+              onTap: state.isConnected ? () => state.setSensorCount(val) : null,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 height: 62,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     gradient: sel ? T.blueGrad : null,
-                    color: sel
-                        ? null
-                        : (dark ? T.bg3 : const Color(0xFFF4F7FF)),
+                    color:
+                        sel ? null : (dark ? T.bg3 : const Color(0xFFF4F7FF)),
                     border: Border.all(
                         color: sel ? Colors.transparent : T.cardBorder(dark)),
                     boxShadow: sel
                         ? [
                             BoxShadow(
-                                color: T.blue.withOpacity(0.3),
-                                blurRadius: 14)
+                                color: T.blue.withOpacity(0.3), blurRadius: 14)
                           ]
                         : null),
                 child: Center(
@@ -1909,8 +1883,7 @@ class _ZonePicker extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w900,
-                            color:
-                                sel ? Colors.white : T.text2(dark)))),
+                            color: sel ? Colors.white : T.text2(dark)))),
               ),
             ),
           ));
@@ -2027,8 +2000,7 @@ class _SliderTile extends StatelessWidget {
                     color: T.text1(dark)))
           ]),
           Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
               decoration: BoxDecoration(
                   color: color.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(20),
@@ -2063,8 +2035,7 @@ class _SchedSection extends StatelessWidget {
   final AppState state;
   final bool dark;
   const _SchedSection({required this.state, required this.dark, super.key});
-  String _fmt(int s) =>
-      '${((s ~/ 3600) % 24).toString().padLeft(2, '0')}:'
+  String _fmt(int s) => '${((s ~/ 3600) % 24).toString().padLeft(2, '0')}:'
       '${((s % 3600) ~/ 60).toString().padLeft(2, '0')}';
   TimeOfDay _tod(int s) =>
       TimeOfDay(hour: (s ~/ 3600) % 24, minute: (s % 3600) ~/ 60);
@@ -2143,9 +2114,7 @@ class _SchedSection extends StatelessWidget {
                   child: const Icon(Icons.timer_rounded,
                       color: Colors.white, size: 23)),
               const SizedBox(width: 14),
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text('Daily Active Period',
                     style: TextStyle(
                         fontSize: 13,
@@ -2188,9 +2157,8 @@ class _TimeTile extends StatelessWidget {
               color: T.card(dark),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                  color: enabled
-                      ? color.withOpacity(0.3)
-                      : T.cardBorder(dark))),
+                  color:
+                      enabled ? color.withOpacity(0.3) : T.cardBorder(dark))),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
@@ -2232,8 +2200,7 @@ class _InfoBox extends StatelessWidget {
   final IconData icon;
   final String text;
   final bool dark;
-  const _InfoBox(
-      {required this.icon, required this.text, required this.dark});
+  const _InfoBox({required this.icon, required this.text, required this.dark});
 
   @override
   Widget build(BuildContext context) => Container(
@@ -2260,119 +2227,112 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = context.watch<AppState>();
     final dark = Theme.of(context).brightness == Brightness.dark;
-    return CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-              floating: true,
-              snap: true,
-              title: const Text('Settings'),
-              bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(1),
-                  child: Divider(
-                      height: 1, color: T.cardBorder(dark)))),
-          SliverPadding(
-              padding: const EdgeInsets.all(20),
-              sliver: SliverList(
-                  delegate: SliverChildListDelegate([
-                _Lbl('APPEARANCE', dark),
-                const SizedBox(height: 10),
-                _SCard(dark: dark, children: [
-                  _SRow(
-                      icon: Icons.palette_outlined,
-                      label: 'Theme',
-                      sub: s.themeMode == ThemeMode.dark
-                          ? 'Dark'
-                          : s.themeMode == ThemeMode.light
-                              ? 'Light'
-                              : 'System',
-                      dark: dark,
-                      trail: SegmentedButton<ThemeMode>(
-                          segments: const [
-                            ButtonSegment(
-                                value: ThemeMode.light,
-                                icon: Icon(Icons.light_mode_rounded,
-                                    size: 15)),
-                            ButtonSegment(
-                                value: ThemeMode.system,
-                                icon: Icon(
-                                    Icons.brightness_auto_rounded,
-                                    size: 15)),
-                            ButtonSegment(
-                                value: ThemeMode.dark,
-                                icon: Icon(Icons.dark_mode_rounded,
-                                    size: 15)),
-                          ],
-                          selected: {s.themeMode},
-                          onSelectionChanged: (v) =>
-                              s.setTheme(v.first),
-                          style: const ButtonStyle(
-                              visualDensity: VisualDensity.compact))),
-                ]),
-                const SizedBox(height: 20),
-                _Lbl('CONNECTION', dark),
-                const SizedBox(height: 10),
-                _SCard(dark: dark, children: [
-                  _SRow(
-                      icon: s.isConnected
-                          ? Icons.cloud_done_rounded
-                          : Icons.cloud_off_rounded,
-                      iconColor: s.isConnected ? T.wet : T.dry,
-                      label: s.isConnected
-                          ? 'Connected'
-                          : s.mqttStatus == MqttStatus.connecting
-                              ? 'Connecting…'
-                              : 'Disconnected',
-                      sub: kMqttHost,
-                      dark: dark),
-                  if (!s.isConnected)
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
-                        child: SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: ElevatedButton.icon(
-                                onPressed: s.reconnect,
-                                icon: const Icon(Icons.refresh_rounded,
-                                    size: 18),
-                                label: const Text('Reconnect',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700)),
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: T.blue,
-                                    foregroundColor: Colors.white,
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(14)))))),
-                ]),
-                const SizedBox(height: 20),
-                _Lbl('ABOUT', dark),
-                const SizedBox(height: 10),
-                _SCard(dark: dark, children: [
-                  _SRow(
-                      icon: Icons.water_drop_rounded,
-                      iconColor: T.blue,
-                      label: 'GreenFlow',
-                      sub: 'v5.0 — Control Room Edition',
-                      dark: dark),
-                  _SRow(
-                      icon: Icons.memory_rounded,
-                      iconColor: T.cyan,
-                      label: 'Hardware',
-                      sub: 'ESP32 · ILI9341 · 4× Moisture Sensors',
-                      dark: dark),
-                  _SRow(
-                      icon: Icons.wifi_rounded,
-                      iconColor: T.blue,
-                      label: 'Protocol',
-                      sub: 'MQTT over TLS (port 8883)',
-                      dark: dark),
-                ]),
-                const SizedBox(height: 40),
-              ]))),
-        ]);
+    return CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+      SliverAppBar(
+          floating: true,
+          snap: true,
+          title: const Text('Settings'),
+          bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(1),
+              child: Divider(height: 1, color: T.cardBorder(dark)))),
+      SliverPadding(
+          padding: const EdgeInsets.all(20),
+          sliver: SliverList(
+              delegate: SliverChildListDelegate([
+            _Lbl('APPEARANCE', dark),
+            const SizedBox(height: 10),
+            _SCard(dark: dark, children: [
+              _SRow(
+                  icon: Icons.palette_outlined,
+                  label: 'Theme',
+                  sub: s.themeMode == ThemeMode.dark
+                      ? 'Dark'
+                      : s.themeMode == ThemeMode.light
+                          ? 'Light'
+                          : 'System',
+                  dark: dark,
+                  trail: SegmentedButton<ThemeMode>(
+                      segments: const [
+                        ButtonSegment(
+                            value: ThemeMode.light,
+                            icon: Icon(Icons.light_mode_rounded, size: 15)),
+                        ButtonSegment(
+                            value: ThemeMode.system,
+                            icon:
+                                Icon(Icons.brightness_auto_rounded, size: 15)),
+                        ButtonSegment(
+                            value: ThemeMode.dark,
+                            icon: Icon(Icons.dark_mode_rounded, size: 15)),
+                      ],
+                      selected: {
+                        s.themeMode
+                      },
+                      onSelectionChanged: (v) => s.setTheme(v.first),
+                      style: const ButtonStyle(
+                          visualDensity: VisualDensity.compact))),
+            ]),
+            const SizedBox(height: 20),
+            _Lbl('CONNECTION', dark),
+            const SizedBox(height: 10),
+            _SCard(dark: dark, children: [
+              _SRow(
+                  icon: s.isConnected
+                      ? Icons.cloud_done_rounded
+                      : Icons.cloud_off_rounded,
+                  iconColor: s.isConnected ? T.wet : T.dry,
+                  label: s.isConnected
+                      ? 'Connected'
+                      : s.mqttStatus == MqttStatus.connecting
+                          ? 'Connecting…'
+                          : 'Disconnected',
+                  sub: kMqttHost,
+                  dark: dark),
+              if (!s.isConnected)
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton.icon(
+                            onPressed: s.reconnect,
+                            icon: const Icon(Icons.refresh_rounded, size: 18),
+                            label: const Text('Reconnect',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w700)),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: T.blue,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(14)))))),
+            ]),
+            const SizedBox(height: 20),
+            _Lbl('ABOUT', dark),
+            const SizedBox(height: 10),
+            _SCard(dark: dark, children: [
+              _SRow(
+                  icon: Icons.water_drop_rounded,
+                  iconColor: T.blue,
+                  label: 'GreenFlow',
+                  sub: 'v5.0 — Control Room Edition',
+                  dark: dark),
+              _SRow(
+                  icon: Icons.memory_rounded,
+                  iconColor: T.cyan,
+                  label: 'Hardware',
+                  sub: 'ESP32 · ILI9341 · 4× Moisture Sensors',
+                  dark: dark),
+              _SRow(
+                  icon: Icons.wifi_rounded,
+                  iconColor: T.blue,
+                  label: 'Protocol',
+                  sub: 'MQTT over TLS (port 8883)',
+                  dark: dark),
+            ]),
+            const SizedBox(height: 40),
+          ]))),
+    ]);
   }
 }
 
@@ -2414,21 +2374,18 @@ class _SRow extends StatelessWidget {
             decoration: BoxDecoration(
                 color: (iconColor ?? T.blue).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(11)),
-            child:
-                Icon(icon, color: iconColor ?? T.blue, size: 20)),
+            child: Icon(icon, color: iconColor ?? T.blue, size: 20)),
         const SizedBox(width: 14),
         Expanded(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-              Text(label,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: T.text1(dark))),
-              Text(sub,
-                  style: TextStyle(fontSize: 13, color: T.text2(dark))),
-            ])),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(label,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: T.text1(dark))),
+          Text(sub, style: TextStyle(fontSize: 13, color: T.text2(dark))),
+        ])),
         if (trail != null) trail!,
       ]));
 }
@@ -2474,8 +2431,8 @@ class _MqttChipState extends State<_MqttChip>
         child: AnimatedBuilder(
             animation: _ctrl,
             builder: (_, __) => Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 7),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
                 decoration: BoxDecoration(
                     color: color.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
@@ -2487,15 +2444,14 @@ class _MqttChipState extends State<_MqttChip>
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: color,
-                          boxShadow:
-                              widget.status == MqttStatus.connected
-                                  ? [
-                                      BoxShadow(
-                                          color: color.withOpacity(
-                                              0.35 + _ctrl.value * 0.35),
-                                          blurRadius: 7)
-                                    ]
-                                  : null)),
+                          boxShadow: widget.status == MqttStatus.connected
+                              ? [
+                                  BoxShadow(
+                                      color: color.withOpacity(
+                                          0.35 + _ctrl.value * 0.35),
+                                      blurRadius: 7)
+                                ]
+                              : null)),
                   const SizedBox(width: 7),
                   Text(label,
                       style: TextStyle(
